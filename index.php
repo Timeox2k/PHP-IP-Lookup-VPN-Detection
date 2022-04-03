@@ -30,7 +30,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 $country = $json_data["country"];
                 $isp = $json_data["isp"];
                 $vpn = file_get_contents($urlIsVPN);
-                $manage['result'][] = array(
+                $manage['result'] = array(
                     'IP' => $ip,
                     'AS' => $as,
                     'City' => $city,
@@ -56,7 +56,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         } else {
             $row = $stmt->fetch();
 
-            $manage['result'][] = array(
+            $manage['result'] = array(
                 'IP' => $ip,
                 'AS' => $row["asn"],
                 'City' => $row["city"],
