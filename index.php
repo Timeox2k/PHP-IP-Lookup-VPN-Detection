@@ -15,7 +15,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
     } else {
         require("./lib/php/database.php");
         $stmt = $mysql->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
-        $stmt->bindParam(":ip", md5($ip));
+        $stmt->bindParam(":ip", $ip);
         $stmt->execute();
         $ipcount = $stmt->rowCount();
 
@@ -45,7 +45,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             echo json_encode($manage);
 
             $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,ASN,ISP,VPN_RESULT) VALUES (:ip, :city, :country, :asn, :isp, :vpn_result);");
-            $stmt->bindParam(":ip", md5($ip));
+            $stmt->bindParam(":ip", $ip);
             $stmt->bindParam(":city", $city);
             $stmt->bindParam(":country", $country);
             $stmt->bindParam(":asn", $as);
