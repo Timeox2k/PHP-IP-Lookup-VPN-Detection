@@ -15,12 +15,12 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
     } else {
         require("./lib/php/database.php");
         $stmt = $mysql->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
-        $stmt->bindParam(":ip", $ip);
+        $stmt->bindParam(":ip", md5($ip));
         $stmt->execute();
         $ipcount = $stmt->rowCount();
 
         if ($ipcount == 0) {
-            $urlIsVPN = "https://datacenter-api.softwarelara.com/?ip=" . $ip;
+            $urlIsVPN = "https://blackbox.ipinfo.app/lookup/" . $ip;
             $urlLookup = "http://ip-api.com/json/" . $ip;
             $json = file_get_contents($urlLookup);
             $json_data = json_decode($json, true);
@@ -45,7 +45,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             echo json_encode($manage);
 
             $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,ASN,ISP,VPN_RESULT) VALUES (:ip, :city, :country, :asn, :isp, :vpn_result);");
-            $stmt->bindParam(":ip", $ip);
+            $stmt->bindParam(":ip", md5($ip));
             $stmt->bindParam(":city", $city);
             $stmt->bindParam(":country", $country);
             $stmt->bindParam(":asn", $as);
