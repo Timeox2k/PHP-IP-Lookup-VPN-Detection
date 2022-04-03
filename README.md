@@ -12,5 +12,5 @@ Lookup IPs (IPv4 + IPv6), store them in MySQL and Redis + check if the IP is a V
 
 ## Hint:
 - Only non commercial use allowed
-- Only 45 individual requests per minute from an IP address
+- Only 45 unique requests per minute from an IP address because of IP-API
     - if you go over the limit, your IP will get banned for 1 hour
