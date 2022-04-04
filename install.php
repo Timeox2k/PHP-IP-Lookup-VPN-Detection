@@ -10,6 +10,11 @@ $createTable = "CREATE TABLE `ip_addresses_ps` (
 	`isp` VARCHAR(255) NOT NULL,
 	`vpn_result` VARCHAR(25) NOT NULL, 
     PRIMARY KEY (`id`)";
+	
+	$createTable = "CREATE TABLE `datacenter_asn` (
+		`id` INT(255) NOT NULL AUTO_INCREMENT,
+		`asn` VARCHAR(255) NOT NULL,
+		PRIMARY KEY (`id`)";
 
 $stmt = $mysql->prepare($createTable);
 
