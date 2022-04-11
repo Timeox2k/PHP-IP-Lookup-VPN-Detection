@@ -50,7 +50,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             }
             echo json_encode($manage);
 
-            $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,LAT, LON, ASN,ISP, ORG, VPN_RESULT) VALUES (:ip, :city, :country, :lat, :lon, :asn, :isp, :org, :vpn_result);");
+            $stmt = $pdo->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,LAT, LON, ASN,ISP, ORG, VPN_RESULT) VALUES (:ip, :city, :country, :lat, :lon, :asn, :isp, :org, :vpn_result);");
             $stmt->bindParam(":ip", md5($ip));
             $stmt->bindParam(":city", $city);
             $stmt->bindParam(":country", $country);
