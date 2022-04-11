@@ -45,7 +45,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                     'vpn' => $vpn,
                 );
             } else {
-                echo "Invalid Request!";
+                echo "{\"error\": \"Invalid Request!\"}";
                 exit;
             }
             echo json_encode($manage);
@@ -83,6 +83,6 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         }
     }
 } else {
-    echo "IP not set.";
+    echo "{\"error\": \"IP not set.\"}";
     exit();
 }
