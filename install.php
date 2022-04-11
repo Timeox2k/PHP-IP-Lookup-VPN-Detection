@@ -6,8 +6,11 @@ $table_ip_addresses_ps = "CREATE TABLE IF NOT EXISTS `ip_addresses_ps` (
 	`ip` VARCHAR(255) NOT NULL,
 	`city` VARCHAR(255) NOT NULL,
 	`country` VARCHAR(255) NOT NULL,
+    `lat` DOUBLE(5,5) NOT NULL,
+    `lon` DOUBLE(5,5) NOT NULL,
 	`asn` VARCHAR(255) NOT NULL,
 	`isp` VARCHAR(255) NOT NULL,
+    `org` VARCHAR(255) NOT NULL,
 	`vpn_result` VARCHAR(25) NOT NULL, 
     PRIMARY KEY (`id`)
 	);";

@@ -28,15 +28,21 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 $as = $json_data["as"];
                 $city = $json_data["city"];
                 $country = $json_data["country"];
+                $lat = $json_data["lat"];
+                $lon = $json_data["lon"];
                 $isp = $json_data["isp"];
+                $org = $json_data["org"];
                 $vpn = file_get_contents($urlIsVPN);
                 $manage['result'] = array(
                     'IP' => $ip,
                     'AS' => $as,
                     'City' => $city,
                     'Country' => $country,
+                    'lat' => $lat,
+                    'lon' => $lon,
                     'ISP' => $isp,
-                    'VPN' => $vpn
+                    'org' => $org,
+                    'VPN' => $vpn,
                 );
             } else {
                 echo "Invalid Request!";
@@ -44,10 +50,12 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             }
             echo json_encode($manage);
 
-            $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,ASN,ISP,VPN_RESULT) VALUES (:ip, :city, :country, :asn, :isp, :vpn_result);");
+            $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,LAT, LON, ASN,ISP, ORG, VPN_RESULT) VALUES (:ip, :city, :country, :lat, :lon, :asn, :isp, :org, :vpn_result);");
             $stmt->bindParam(":ip", md5($ip));
             $stmt->bindParam(":city", $city);
             $stmt->bindParam(":country", $country);
+            $stmt->bindParam(":lat", $lat);
+            $stmt->bindParam(":lon", $lon);
             $stmt->bindParam(":asn", $as);
             $stmt->bindParam(":isp", $isp);
             $stmt->bindParam(":vpn_result", $vpn);
@@ -61,7 +69,10 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 'AS' => $row["asn"],
                 'City' => $row["city"],
                 'Country' => $row["country"],
+                'lat' => $row["lat"],
+                'lon' => $row["lon"],
                 'ISP' => $row["isp"],
+                'org' => $row["org"],
                 'VPN' => $row["vpn_result"]
             );
             echo json_encode($manage);
