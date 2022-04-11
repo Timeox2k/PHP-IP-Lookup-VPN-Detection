@@ -1,5 +1,5 @@
 <?php
-require("./lib/php/database.php");
+require_once("./lib/php/database.php");
 
 $table_ip_addresses_ps = "CREATE TABLE IF NOT EXISTS `ip_addresses_ps` (
 	`id` INT(255) NOT NULL AUTO_INCREMENT,
@@ -27,7 +27,7 @@ echo "Creating tables... </br>";
 
 foreach($tables as $t => $mysql)
 {
-	$stmt = $mysql->prepare($t);
+    $stmt = $pdo->prepare($mysql);
 	$stmt->execute();
 }
 

@@ -14,7 +14,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         exit;
     } else {
         require("./lib/php/database.php");
-        $stmt = $mysql->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
         $stmt->bindParam(":ip", md5($ip));
         $stmt->execute();
         $ipcount = $stmt->rowCount();
