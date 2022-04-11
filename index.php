@@ -58,6 +58,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             $stmt->bindParam(":lon", $lon);
             $stmt->bindParam(":asn", $as);
             $stmt->bindParam(":isp", $isp);
+            $stmt->bindParam(":org", $org);
             $stmt->bindParam(":vpn_result", $vpn);
 
             $stmt->execute();
