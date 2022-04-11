@@ -14,7 +14,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         exit;
     } else {
         require("./lib/php/database.php");
-        $stmt = $mysql->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM ip_addresses_ps WHERE ip = :ip LIMIT 1");
         $stmt->bindParam(":ip", md5($ip));
         $stmt->execute();
         $ipcount = $stmt->rowCount();
@@ -28,28 +28,37 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 $as = $json_data["as"];
                 $city = $json_data["city"];
                 $country = $json_data["country"];
+                $lat = $json_data["lat"];
+                $lon = $json_data["lon"];
                 $isp = $json_data["isp"];
+                $org = $json_data["org"];
                 $vpn = file_get_contents($urlIsVPN);
                 $manage['result'] = array(
-                    'IP' => $ip,
-                    'AS' => $as,
-                    'City' => $city,
-                    'Country' => $country,
-                    'ISP' => $isp,
-                    'VPN' => $vpn
+                    'ip' => $ip,
+                    'as' => $as,
+                    'city' => $city,
+                    'country' => $country,
+                    'lat' => $lat,
+                    'lon' => $lon,
+                    'isp' => $isp,
+                    'org' => $org,
+                    'vpn' => $vpn,
                 );
             } else {
-                echo "Invalid Request!";
+                echo "{\"error\": \"Invalid Request!\"}";
                 exit;
             }
             echo json_encode($manage);
 
-            $stmt = $mysql->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,ASN,ISP,VPN_RESULT) VALUES (:ip, :city, :country, :asn, :isp, :vpn_result);");
+            $stmt = $pdo->prepare("INSERT INTO ip_addresses_ps (IP,CITY,COUNTRY,LAT, LON, ASN,ISP, ORG, VPN_RESULT) VALUES (:ip, :city, :country, :lat, :lon, :asn, :isp, :org, :vpn_result);");
             $stmt->bindParam(":ip", md5($ip));
             $stmt->bindParam(":city", $city);
             $stmt->bindParam(":country", $country);
+            $stmt->bindParam(":lat", $lat);
+            $stmt->bindParam(":lon", $lon);
             $stmt->bindParam(":asn", $as);
             $stmt->bindParam(":isp", $isp);
+            $stmt->bindParam(":org", $org);
             $stmt->bindParam(":vpn_result", $vpn);
 
             $stmt->execute();
@@ -57,12 +66,15 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             $row = $stmt->fetch();
 
             $manage['result'] = array(
-                'IP' => $ip,
-                'AS' => $row["asn"],
-                'City' => $row["city"],
-                'Country' => $row["country"],
-                'ISP' => $row["isp"],
-                'VPN' => $row["vpn_result"]
+                'ip' => $ip,
+                'as' => $row["asn"],
+                'city' => $row["city"],
+                'country' => $row["country"],
+                'lat' => $row["lat"],
+                'lon' => $row["lon"],
+                'isp' => $row["isp"],
+                'org' => $row["org"],
+                'vpn' => $row["vpn_result"]
             );
             echo json_encode($manage);
             $redis->set($ip, json_encode($manage));
@@ -71,6 +83,6 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         }
     }
 } else {
-    echo "IP not set.";
+    echo "{\"error\": \"IP not set.\"}";
     exit();
 }
