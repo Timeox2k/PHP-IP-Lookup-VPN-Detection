@@ -34,15 +34,15 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 $org = $json_data["org"];
                 $vpn = file_get_contents($urlIsVPN);
                 $manage['result'] = array(
-                    'IP' => $ip,
-                    'AS' => $as,
-                    'City' => $city,
-                    'Country' => $country,
+                    'ip' => $ip,
+                    'as' => $as,
+                    'city' => $city,
+                    'country' => $country,
                     'lat' => $lat,
                     'lon' => $lon,
-                    'ISP' => $isp,
+                    'isp' => $isp,
                     'org' => $org,
-                    'VPN' => $vpn,
+                    'vpn' => $vpn,
                 );
             } else {
                 echo "Invalid Request!";
@@ -66,15 +66,15 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
             $row = $stmt->fetch();
 
             $manage['result'] = array(
-                'IP' => $ip,
-                'AS' => $row["asn"],
-                'City' => $row["city"],
-                'Country' => $row["country"],
+                'ip' => $ip,
+                'as' => $row["asn"],
+                'city' => $row["city"],
+                'country' => $row["country"],
                 'lat' => $row["lat"],
                 'lon' => $row["lon"],
-                'ISP' => $row["isp"],
+                'isp' => $row["isp"],
                 'org' => $row["org"],
-                'VPN' => $row["vpn_result"]
+                'vpn' => $row["vpn_result"]
             );
             echo json_encode($manage);
             $redis->set($ip, json_encode($manage));
