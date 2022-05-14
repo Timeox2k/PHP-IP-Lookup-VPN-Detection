@@ -20,7 +20,6 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         $ipcount = $stmt->rowCount();
 
         if ($ipcount == 0) {
-            $urlIsVPN = "https://blackbox.ipinfo.app/lookup/" . $ip;
             $urlLookup = "http://ip-api.com/json/" . $ip;
             $json = file_get_contents($urlLookup);
             $json_data = json_decode($json, true);
@@ -32,6 +31,7 @@ if (isset($_GET["ip"]) && filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
                 $lon = $json_data["lon"];
                 $isp = $json_data["isp"];
                 $org = $json_data["org"];
+                $urlIsVPN = "https://vpn.softwarelara.com/?asn=" . strtok($as,  ' ');;
                 $vpn = file_get_contents($urlIsVPN);
                 $manage['result'] = array(
                     'ip' => $ip,
